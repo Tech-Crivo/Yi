@@ -13,15 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set working directory
+        run: echo "PROJECT_DIR=yi" >> $GITHUB_ENV
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Install dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
         run: npm install
 
       - name: Build the React app
+        working-directory: ${{ env.PROJECT_DIR }}
         run: npm run build
 
       - name: Copy build folder to VPS
@@ -30,7 +35,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "build/*"
+          source: "yi/build/*"
           target: "/var/www/yi.crivo.in"
 
       - name: Reload Nginx
