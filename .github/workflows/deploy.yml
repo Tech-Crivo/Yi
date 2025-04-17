@@ -29,13 +29,16 @@ jobs:
         working-directory: ${{ env.PROJECT_DIR }}
         run: npm run build
 
+      - name: List contents of dist folder
+        run: ls -R dist  # This helps to debug the contents of the dist folder
+
       - name: Copy build folder to VPS
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "dist/*"  # Updated to use 'dist' folder
+          source: "dist/**/*"  # Updated to use 'dist' folder recursively
           target: "/var/www/yi.crivo.in"
 
       - name: Reload Nginx
