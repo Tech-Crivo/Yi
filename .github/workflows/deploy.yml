@@ -35,7 +35,7 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "yi/build/*"
+          source: "${{ env.PROJECT_DIR }}/build/*"
           target: "/var/www/yi.crivo.in"
 
       - name: Reload Nginx
@@ -45,3 +45,4 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: sudo systemctl reload nginx
+
